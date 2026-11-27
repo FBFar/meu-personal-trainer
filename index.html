@@ -11,11 +11,11 @@
 <meta name="apple-mobile-web-app-title" content="Meu Personal Trainer"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="application-name" content="Meu Personal Trainer"/>
-<link rel="shortcut icon" href="/meu-personal-trainer/icon-192.png" type="image/png"/>
-<link rel="icon" href="/meu-personal-trainer/icon-192.png" type="image/png" sizes="192x192"/>
-<link rel="apple-touch-icon" href="/meu-personal-trainer/apple-touch-icon.png" sizes="180x180"/>
-<link rel="apple-touch-icon-precomposed" href="/meu-personal-trainer/apple-touch-icon.png"/>
-<link rel="manifest" href="/meu-personal-trainer/manifest.webmanifest"/>
+<link rel="shortcut icon" href="/meu-personal-trainer/personal-icon-192-v3.png" type="image/png"/>
+<link rel="icon" href="/meu-personal-trainer/personal-icon-192-v3.png" type="image/png" sizes="192x192"/>
+<link rel="apple-touch-icon" href="/meu-personal-trainer/personal-apple-v3.png" sizes="180x180"/>
+<link rel="apple-touch-icon-precomposed" href="/meu-personal-trainer/personal-apple-v3.png"/>
+<link rel="manifest" href="/meu-personal-trainer/manifest-v3.json"/>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
@@ -1023,7 +1023,7 @@ document.querySelectorAll('.week-btn').forEach(btn => {
 </script><script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/meu-personal-trainer/service-worker.js');
+    navigator.serviceWorker.register('/meu-personal-trainer/service-worker.js', {updateViaCache:'none'}).then(r=>r.update());
   });
 }
 </script>
