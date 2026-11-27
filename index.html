@@ -10,6 +10,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="Meu Personal Trainer"/>
 <meta name="mobile-web-app-capable" content="yes"/>
+<meta name="application-name" content="Meu Personal Trainer"/>
 <link rel="shortcut icon" href="/meu-personal-trainer/icon-192.png" type="image/png"/>
 <link rel="icon" href="/meu-personal-trainer/icon-192.png" type="image/png" sizes="192x192"/>
 <link rel="apple-touch-icon" href="/meu-personal-trainer/apple-touch-icon.png" sizes="180x180"/>
@@ -1019,4 +1020,11 @@ document.querySelectorAll('.week-btn').forEach(btn => {
     if (target) target.classList.add('active');
   });
 });
-</script></body></html>
+</script><script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/meu-personal-trainer/service-worker.js');
+  });
+}
+</script>
+</body></html>
