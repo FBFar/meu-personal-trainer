@@ -1048,28 +1048,74 @@ if ('serviceWorker' in navigator) {
 }
 </script>
 
-<button id="installAppBtn" class="install-app-btn" type="button">Instalar Personal</button>
+<button id="installAppBtn" class="install-app-btn" type="button" hidden aria-disabled="false">Instalar Personal</button>
+<p id="installStatus" aria-live="polite" style="position:fixed;left:-9999px"></p>
 <script>
-let deferredInstallPrompt = null;
 const installBtn = document.getElementById('installAppBtn');
+const installStatus = document.getElementById('installStatus');
+const supportsWebInstall =
+  typeof Navigator !== 'undefined' &&
+  typeof Navigator.prototype.install === 'function';
+
+let deferredInstallPrompt;
+
+function showInstallButton() {
+  installBtn.hidden = false;
+  installBtn.classList.add('show');
+}
+
+function hideInstallButton() {
+  installBtn.hidden = true;
+  installBtn.classList.remove('show');
+}
+
+if (supportsWebInstall) {
+  showInstallButton();
+}
 
 window.addEventListener('beforeinstallprompt', (event) => {
   event.preventDefault();
   deferredInstallPrompt = event;
-  installBtn.classList.add('show');
+  if (!supportsWebInstall) {
+    showInstallButton();
+  }
 });
 
 installBtn.addEventListener('click', async () => {
-  if (!deferredInstallPrompt) return;
-  deferredInstallPrompt.prompt();
-  await deferredInstallPrompt.userChoice;
-  deferredInstallPrompt = null;
-  installBtn.classList.remove('show');
+  if (installBtn.getAttribute('aria-disabled') === 'true') return;
+  installBtn.setAttribute('aria-disabled', 'true');
+
+  try {
+    if (supportsWebInstall) {
+      await navigator.install();
+      installStatus.textContent = 'Aplicativo instalado ou aberto.';
+      hideInstallButton();
+    } else if (deferredInstallPrompt) {
+      const promptEvent = deferredInstallPrompt;
+      deferredInstallPrompt = undefined;
+      await promptEvent.prompt();
+      const { outcome } = await promptEvent.userChoice;
+      installStatus.textContent =
+        outcome === 'accepted'
+          ? 'Aplicativo instalado.'
+          : 'Instalação cancelada.';
+      if (!deferredInstallPrompt) hideInstallButton();
+    }
+  } catch (error) {
+    if (error && error.name === 'AbortError') {
+      installStatus.textContent = 'Instalação cancelada ou não concluída.';
+    } else {
+      installStatus.textContent = 'Não foi possível iniciar a instalação.';
+      console.error(error);
+    }
+  } finally {
+    installBtn.removeAttribute('aria-disabled');
+  }
 });
 
 window.addEventListener('appinstalled', () => {
-  installBtn.classList.remove('show');
-  deferredInstallPrompt = null;
+  deferredInstallPrompt = undefined;
+  hideInstallButton();
 });
 </script>
 </body></html>
