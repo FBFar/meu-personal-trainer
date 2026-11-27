@@ -2,9 +2,11 @@
   "id": "/meu-personal-trainer/",
   "name": "Meu Personal Trainer",
   "short_name": "Personal",
+  "description": "Treino pessoal com acompanhamento digital.",
   "start_url": "/meu-personal-trainer/",
   "scope": "/meu-personal-trainer/",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#1E1E1E",
   "theme_color": "#1E1E1E",
   "icons": [
